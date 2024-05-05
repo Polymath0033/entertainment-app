@@ -1,6 +1,8 @@
 import logo from "../assets/logo.svg";
 import { useState } from "react";
 import { supabase } from "../helpers/supabase";
+import { useNavigate } from "react-router-dom";
+// import { useDispatch, useSelector } from "react-redux";
 // Database password l9aQtrJ1tTyMdj2t
 /*
 
@@ -12,32 +14,40 @@ export const AuthenticationPage = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const user = useSelector((state: any) => state.user.user);
+
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      setError("");
-      setLoading(true);
-      if (state === "sign up" && password !== repeatPassword)
-        return setError("Passwords do not match");
-      if (state === "sign up" && password.length < 8)
-        return setError("Password must be at least 8 characters long");
-      if (state === "sign up") {
-        const response = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        console.log(response);
-        response.error ? setError(response.error.message) : null;
+    setError("");
+    setLoading(true);
+    if (state === "sign up" && password !== repeatPassword)
+      return setError("Passwords do not match");
+    if (state === "sign up" && password.length < 8)
+      return setError("Password must be at least 8 characters long");
+    if (state === "sign up") {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) {
+        setError(error.message);
+        return;
       } else {
-        const response = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        response.error ? setError(response.error.message) : null;
+        navigate("/home");
       }
-      // await login(email, password);
-    } catch {
-      setError("Failed to log in");
+    } else if (state === "login") {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) {
+        setError(error.message);
+        return;
+      } else {
+        navigate("/home");
+      }
     }
     setLoading(false);
   };
