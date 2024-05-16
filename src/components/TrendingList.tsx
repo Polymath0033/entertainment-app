@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Movie } from "../types/data";
 import { PlayButton } from "./PlayButton";
 import { BookmarkIcon } from "./BookmarkIcon";
-import { getImageURL } from "../helpers/image-helper";
+// import { getImageURL } from "../helpers/image-helper";
 /*
 
 border-radius: 8px;
@@ -11,15 +11,14 @@ background: linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 10
 export const TrendingList: FC<{
   movie: Movie;
 }> = ({ movie }) => {
-  const backgroundImage = `url('./assets/thumbnails/beyond-earth/trending/large.jpg')`;
+  // const backgroundImage = `url('./assets/thumbnails/beyond-earth/trending/large.jpg')`;
   return (
     // <li
     //   className={`!w-[400px] group hover:[background:linear-gradient(0deg,_rgba(0,_0,_0,_0.50)_0%,_rgba(0,_0,_0,_0.50)_100%),_url('${movie.thumbnail.trending?.large}')_#979797_50%] bg-cover [background:url(${backgroundImage})_#979797_50%]  rounded-lg p-4 flex flex-col justify-between  h-[200px]`}
     // >*/
     <li
-      className={`!w-[400px] group hover:bg-gradient-to-b from-gray-900 to-gray-900 bg-cover bg-no-repeat bg-[url(${getImageURL(
-        movie.thumbnail.trending?.large
-      )})] rounded-lg p-4 flex flex-col justify-between h-[200px]`}
+      style={{ backgroundImage: `url('${movie.thumbnail.trending?.large}')` }}
+      className={`!w-[400px] group hover:bg-gradient-to-b from-gray-900 to-gray-900 bg-cover bg-no-repeat bg-[url('${movie.thumbnail.trending?.large}')] rounded-lg p-4 flex flex-col justify-between h-[200px]`}
     >
       <BookmarkIcon />
       <PlayButton />
